@@ -51,4 +51,4 @@ They are independent namespaces. A pane labeled `pika` can host an agent named `
 
 ## Naming
 
-The plugin labels each new pane and every unlabeled pane at startup. Existing labels are never overwritten, and names are unique across the server. Once the word list is exhausted it joins words, so a label may be compound (`bison-wapiti`). There is no cap on how many panes can be labeled. To relabel by hand: `herdr pane rename <id> <label>`.
+The plugin labels each new pane and every unlabeled pane at startup. Existing labels are never overwritten, and names are unique across the server. Once the word list is exhausted it pairs two words, so a label may be compound (`bison-wapiti`). Beyond the pairs it can find, a pane is left unlabeled rather than stalling the hook. To relabel by hand: `herdr pane rename <id> <label>`.

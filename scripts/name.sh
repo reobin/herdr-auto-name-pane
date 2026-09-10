@@ -28,7 +28,7 @@ pane_label() {
 }
 
 word_at() {
-  sed -n "$1p" "$words_file"
+  sed -n "$1p" "$words_file" | tr -d '\r'
 }
 
 random_index() {
@@ -39,7 +39,7 @@ random_index() {
 
 pick_name() {
   used=" $1 "
-  count="$(grep -c . "$words_file")" || return 1
+  count="$(grep -c '' "$words_file")" || return 1
   [ "$count" -gt 0 ] || return 1
 
   start="$(random_index "$count")"
@@ -47,21 +47,29 @@ pick_name() {
   while [ "$i" -lt "$count" ]; do
     candidate="$(word_at $(((start + i - 1) % count + 1)))"
     i=$((i + 1))
+    [ -n "$candidate" ] || continue
     case "$used" in *" $candidate "*) continue ;; esac
     printf '%s' "$candidate"
     return 0
   done
 
-  # Every single word is taken, so extend with more words. Each word added
-  # multiplies the pool by $count, so this terminates rather than capping out.
+  # Single words are all taken, so pair two of them. Give up after a few
+  # tries rather than searching; an unnamed pane beats a stalled hook.
   [ "$count" -ge 2 ] || return 1
-  candidate="$(word_at "$start")"
-  while :; do
-    case "$used" in *" $candidate "*) ;; *) printf '%s' "$candidate"; return 0 ;; esac
-    extra="$(word_at "$(random_index "$count")")"
-    case "-$candidate-" in *"-$extra-"*) continue ;; esac
-    candidate="$candidate-$extra"
+  tries=0
+  while [ "$tries" -lt 20 ]; do
+    tries=$((tries + 1))
+    first="$(word_at "$(random_index "$count")")"
+    second="$(word_at "$(random_index "$count")")"
+    [ -n "$first" ] || continue
+    [ -n "$second" ] || continue
+    [ "$first" != "$second" ] || continue
+    candidate="$first-$second"
+    case "$used" in *" $candidate "*) continue ;; esac
+    printf '%s' "$candidate"
+    return 0
   done
+  return 1
 }
 
 name_pane() {
