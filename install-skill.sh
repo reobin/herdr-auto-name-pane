@@ -12,9 +12,8 @@ for base in "$HOME/.agents/skills" "$HOME/.claude/skills"; do
   dir="$base/$name"
   mkdir -p "$dir"
   cp "$root/SKILL.md" "$dir/SKILL.md"
-  cp "$root/scripts/resolve.sh" "$dir/resolve.sh"
   chmod 644 "$dir/SKILL.md"
-  chmod 755 "$dir/resolve.sh"
+  rm -f "$dir/resolve.sh"
   echo "installed skill -> $dir"
 
   if [ -d "$base/$legacy" ]; then

@@ -11,14 +11,6 @@ Never claim a pane does not exist until you have checked the label column. The `
 
 ## Resolve a label
 
-Run `resolve.sh` from this skill's own directory (the base directory given when the skill loaded):
-
-```sh
-sh <skill-dir>/resolve.sh bison
-```
-
-It prints one pane ID on stdout. On a miss it exits 1; on an ambiguous label it exits 2 and writes the candidate list to stderr, so capture stderr too rather than acting on empty stdout. A pane ID passes through unchanged as long as it is present in the snapshot, so a pane created moments ago may still miss. Equivalent inline lookup when the script is not on hand:
-
 ```sh
 herdr api snapshot | jq -r --arg t bison '
   [.result.snapshot.panes[]?
@@ -27,7 +19,13 @@ herdr api snapshot | jq -r --arg t bison '
   | unique | .[]'
 ```
 
-The pane ID is the first tab-separated field. More than one line means the label is duplicated across workspaces. Do not pick one silently: list the candidates with their workspace and ask which one.
+The pane ID is the first tab-separated field. Read the number of lines:
+
+* none - no such pane. A pane created moments ago may not be in the snapshot yet.
+* one - use that pane ID.
+* more than one - the label is duplicated across workspaces. Do not pick one silently: list the candidates with their workspace and ask which one.
+
+A pane ID given instead of a label passes through unchanged, as long as it is present in the snapshot.
 
 ## List panes with both columns
 
@@ -53,4 +51,4 @@ They are independent namespaces. A pane labeled `pika` can host an agent named `
 
 ## Naming
 
-The plugin labels each new pane and every unlabeled pane at startup. Existing labels are never overwritten, names are unique across the server, and the list falls back to a numeric suffix (`neon-2`) when it runs out. To relabel by hand: `herdr pane rename <id> <label>`.
+The plugin labels each new pane and every unlabeled pane at startup. Existing labels are never overwritten, and names are unique across the server. Once the word list is exhausted it joins words, so a label may be compound (`bison-wapiti`). There is no cap on how many panes can be labeled. To relabel by hand: `herdr pane rename <id> <label>`.

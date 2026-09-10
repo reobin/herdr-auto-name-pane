@@ -6,11 +6,11 @@ description = "Label every new pane with a short name, and teach agents to resol
 platforms = ["linux", "macos"]
 
 [[startup]]
-command = ["sh", "scripts/name-unnamed.sh"]
+command = ["sh", "scripts/name.sh"]
 
 [[events]]
 on = "pane.created"
-command = ["sh", "scripts/name-one.sh"]
+command = ["sh", "scripts/name.sh"]
 
 [[actions]]
 id = "install-skill"
