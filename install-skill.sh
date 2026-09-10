@@ -1,15 +1,24 @@
 #!/bin/sh
 
-# Install SKILL.md for the harnesses on this machine. Idempotent.
+# Install the agent skill for the harnesses on this machine. Idempotent.
 
 set -eu
 
-src="$(CDPATH= cd -- "$(dirname -- "$0")" 2>/dev/null && pwd)/SKILL.md"
-name="auto-name-pane"
+root="$(CDPATH= cd -- "$(dirname -- "$0")" 2>/dev/null && pwd)"
+name="herdr-auto-name-pane"
+legacy="auto-name-pane"
 
-for dir in "$HOME/.agents/skills/$name" "$HOME/.claude/skills/$name"; do
+for base in "$HOME/.agents/skills" "$HOME/.claude/skills"; do
+  dir="$base/$name"
   mkdir -p "$dir"
-  cp "$src" "$dir/SKILL.md"
+  cp "$root/SKILL.md" "$dir/SKILL.md"
+  cp "$root/scripts/resolve.sh" "$dir/resolve.sh"
   chmod 644 "$dir/SKILL.md"
-  echo "installed skill -> $dir/SKILL.md"
+  chmod 755 "$dir/resolve.sh"
+  echo "installed skill -> $dir"
+
+  if [ -d "$base/$legacy" ]; then
+    rm -rf "$base/$legacy"
+    echo "removed stale skill -> $base/$legacy"
+  fi
 done

@@ -2,7 +2,7 @@ id = "reobin.auto-name-pane"
 name = "Auto-name pane"
 version = "0.1.0"
 min_herdr_version = "0.9.0"
-description = "Assign a unique easy label to every new pane; resolve labels to pane IDs for agents"
+description = "Label every new pane with a short name, and teach agents to resolve those labels to pane IDs"
 platforms = ["linux", "macos"]
 
 [[startup]]
@@ -15,5 +15,5 @@ command = ["sh", "scripts/name-one.sh"]
 [[actions]]
 id = "install-skill"
 title = "Install agent skill"
-description = "Copy SKILL.md into this machine's agent skill directories"
+description = "Copy the herdr-auto-name-pane skill into this machine's agent skill directories"
 command = ["sh", "install-skill.sh"]

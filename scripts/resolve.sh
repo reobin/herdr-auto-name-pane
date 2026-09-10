@@ -1,8 +1,9 @@
 #!/bin/sh
 
-# Resolve an animal label (or pass through a pane ID) to a pane ID.
+# Resolve a pane label (or pass through a pane ID) to a pane ID.
 # Usage: resolve.sh <label-or-pane-id>
-# Prints the pane ID on stdout. Exits 1 when nothing matches.
+# Prints the pane ID on stdout. Exits 1 when nothing matches, 2 when the
+# label is ambiguous across workspaces.
 
 set -eu
 
@@ -24,16 +25,32 @@ snapshot="$("$herdr_bin" api snapshot 2>/dev/null)" || {
   exit 1
 }
 
-match="$(
+matches="$(
   printf '%s' "$snapshot" | jq -r --arg t "$target" '
-    (.result.snapshot.panes[]? | select(.pane_id == $t) | .pane_id),
-    (.result.snapshot.panes[]? | select((.label // "") == $t) | .pane_id)
-  ' | head -n 1
-)"
-
-if [ -z "$match" ]; then
-  echo "resolve.sh: no pane named '$target'" >&2
+    [.result.snapshot.panes[]?
+     | select(.pane_id == $t or (.label // "") == $t)
+     | "\(.pane_id)\t\(.workspace_id // "?")"]
+    | unique | .[]'
+)" || {
+  echo "resolve.sh: could not parse Herdr snapshot" >&2
   exit 1
-fi
+}
 
-printf '%s\n' "$match"
+count="$(printf '%s' "$matches" | grep -c . || true)"
+
+case "$count" in
+  0)
+    echo "resolve.sh: no pane named '$target'" >&2
+    exit 1
+    ;;
+  1)
+    printf '%s\n' "$matches" | cut -f1
+    ;;
+  *)
+    echo "resolve.sh: '$target' matches $count panes:" >&2
+    printf '%s\n' "$matches" | while IFS="$(printf '\t')" read -r id ws; do
+      echo "  $id (workspace $ws)" >&2
+    done
+    exit 2
+    ;;
+esac
