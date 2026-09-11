@@ -1,30 +1,30 @@
-# herdr-auto-name-pane
+# herdr-callsigns
 
-Labels every herdr pane with a short, memorable name (`neon`, `mars`, `lima`), so you and your agent can refer to panes by name instead of ID.
+Gives every herdr pane a short, memorable callsign (`neon`, `mars`, `lima`), so you and your agent can refer to panes by name instead of ID.
 
-![Demo: asked what is failing in the mars pane and to tell lima to fix it, the agent loads the herdr-auto-name-pane skill, resolves both labels to pane IDs, reads the failing test from mars, then prompts the lima agent with the fix](assets/demo.gif)
+![Demo: asked what is failing in the mars pane and to tell lima to fix it, the agent loads the herdr-callsigns skill, resolves both callsigns to pane IDs, reads the failing test from mars, then prompts the lima agent with the fix](assets/demo.gif)
 
 ## Install
 
 ```sh
-herdr plugin install reobin/herdr-auto-name-pane
-herdr plugin action invoke reobin.auto-name-pane.install-skill
+herdr plugin install reobin/herdr-callsigns
+herdr plugin action invoke reobin.callsigns.install-skill
 ```
 
-The second command installs the `herdr-auto-name-pane` skill into this machine's agent skill directories, for Claude and `~/.agents`-style harnesses. Check it landed with `herdr plugin log list --plugin reobin.auto-name-pane`.
+The second command installs the `herdr-callsigns` skill into this machine's agent skill directories, for Claude and `~/.agents`-style harnesses. Check it landed with `herdr plugin log list --plugin reobin.callsigns`.
 
 ## Use
 
-You never type pane IDs. Say the label:
+You never type pane IDs. Say the callsign:
 
 - to an agent: `check output of pane neon`, `tell the agent in lima pane to rerun the scan`.
-- the agent resolves the label to a pane ID with the `herdr api snapshot` filter from the skill, then runs `herdr pane read <id>` or `herdr agent prompt <id>`.
+- the agent resolves the callsign to a pane ID with the `herdr api snapshot` filter from the skill, then runs `herdr pane read <id>` or `herdr agent prompt <id>`.
 
-A label duplicated across workspaces is never guessed. The agent lists the candidates with their workspace and asks which one.
+A callsign duplicated across workspaces is never guessed. The agent lists the candidates with their workspace and asks which one.
 
 ## Rules
 
-- Existing labels are never overwritten.
-- Names are unique across the server.
-- Once the word list is exhausted, names pair two words (`neon-mars`). That is 75 single names plus thousands of pairs; beyond that a pane is left unlabeled.
-- Labels and agent names are independent. A pane labeled `pika` can host an agent named `reviewer`.
+- Existing callsigns are never overwritten.
+- Callsigns are unique across the server.
+- Once the word list is exhausted, callsigns pair two words (`neon-mars`). That is 75 single names plus thousands of pairs; beyond that a pane is left without one.
+- Callsigns and agent names are independent. A pane with the callsign `pika` can host an agent named `reviewer`.

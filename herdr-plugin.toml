@@ -1,8 +1,8 @@
-id = "reobin.auto-name-pane"
-name = "Auto-name pane"
+id = "reobin.callsigns"
+name = "Callsigns"
 version = "0.1.0"
 min_herdr_version = "0.9.0"
-description = "Label every new pane with a short name, and teach agents to resolve those labels to pane IDs"
+description = "Give every new pane a short callsign, and teach agents to resolve callsigns to pane IDs"
 platforms = ["linux", "macos"]
 
 [[startup]]
@@ -15,5 +15,5 @@ command = ["sh", "scripts/name.sh"]
 [[actions]]
 id = "install-skill"
 title = "Install agent skill"
-description = "Copy the herdr-auto-name-pane skill into this machine's agent skill directories"
+description = "Copy the herdr-callsigns skill into this machine's agent skill directories"
 command = ["sh", "install-skill.sh"]

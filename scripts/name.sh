@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Label panes with a short name. Herdr runs this both for the startup hook
-# (no event JSON, so every unlabeled pane) and for pane.created (one pane).
-# Never overwrites an existing label.
+# Give panes a short callsign. Herdr runs this both for the startup hook
+# (no event JSON, so every pane without one) and for pane.created (one pane).
+# Never overwrites an existing callsign.
 
 set -eu
 
@@ -12,7 +12,7 @@ herdr_bin="${HERDR_BIN_PATH:-herdr}"
 words_file="assets/words.txt"
 
 command -v jq >/dev/null 2>&1 || {
-  echo "auto-name-pane: jq not found, skipping naming" >&2
+  echo "callsigns: jq not found, skipping naming" >&2
   exit 0
 }
 
@@ -86,7 +86,7 @@ name_pane() {
     fi
     attempts=$((attempts + 1))
   done
-  echo "auto-name-pane: failed to name pane $target after $attempts attempts" >&2
+  echo "callsigns: failed to name pane $target after $attempts attempts" >&2
   return 1
 }
 
