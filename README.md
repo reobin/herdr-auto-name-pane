@@ -8,10 +8,10 @@ Gives every herdr pane a short, memorable callsign (`neon`, `mars`, `lima`), so 
 
 ```sh
 herdr plugin install reobin/herdr-callsigns
-herdr plugin action invoke reobin.callsigns.install-skill
+herdr plugin action invoke herdr-callsigns.install-skill
 ```
 
-The second command installs the `herdr-callsigns` skill into this machine's agent skill directories, for Claude and `~/.agents`-style harnesses. Check it landed with `herdr plugin log list --plugin reobin.callsigns`.
+The second command installs the `herdr-callsigns` skill into this machine's agent skill directories, for Claude and `~/.agents`-style harnesses. Check it landed with `herdr plugin log list --plugin herdr-callsigns`.
 
 ## Use
 
