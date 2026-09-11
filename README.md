@@ -2,6 +2,8 @@
 
 Labels every herdr pane with a short, memorable name (`neon`, `mars`, `lima`), so you and your agent can refer to panes by name instead of ID.
 
+<img width="1379" height="1069" alt="Screenshot 2026-09-11 at 08 35 48" src="https://github.com/user-attachments/assets/fa23ad2e-fab9-461a-a911-d5f095fcd074" />
+
 ## Install
 
 ```sh
