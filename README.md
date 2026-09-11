@@ -2,7 +2,7 @@
 
 Labels every herdr pane with a short, memorable name (`neon`, `mars`, `lima`), so you and your agent can refer to panes by name instead of ID.
 
-<img width="1379" height="1069" alt="Screenshot 2026-09-11 at 08 35 48" src="https://github.com/user-attachments/assets/fa23ad2e-fab9-461a-a911-d5f095fcd074" />
+![Demo: asked what is failing in the mars pane and to tell lima to fix it, the agent loads the herdr-auto-name-pane skill, resolves both labels to pane IDs, reads the failing test from mars, then prompts the lima agent with the fix](assets/demo.gif)
 
 ## Install
 
